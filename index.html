@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wateera · Business Process</title>
+<meta name="description" content="Wateera's operating manual: the deal → delivery → retainer process. Ten stages, two gates, five weeks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ════════ WATEERA TOKENS (fixed standard — from wateera-tokens.css) ════════ */
+:root{
+  --brand-primary:#c9a227;
+  --brand-secondary:#8a6d3b;
+  --accent:var(--brand-primary);
+  --accent-hover:color-mix(in srgb, var(--accent) 86%, #000);
+  --accent-active:color-mix(in srgb, var(--accent) 70%, #000);
+  --accent-contrast:#1b1813;
+  --accent-tint:color-mix(in srgb, var(--accent) 14%, #fffdf7);
+  --accent-tint-strong:color-mix(in srgb, var(--accent) 24%, #fffdf7);
+  --accent-border:color-mix(in srgb, var(--accent) 42%, #fffdf7);
+
+  --action:#1f1c16;
+
+  --gray-0:#fffdf7; --gray-25:#faf7ee; --gray-50:#f3f0e6; --gray-100:#ebe7d8;
+  --gray-150:#e2ddca; --gray-200:#d7d0b9; --gray-300:#c2b99c; --gray-400:#a59a78;
+  --gray-500:#7d7353; --gray-600:#5f5640; --gray-700:#3e3829; --gray-800:#2a261b; --gray-900:#1b1813;
+
+  --surface-page:var(--gray-50);
+  --surface-card:var(--gray-0);
+  --surface-faint:var(--gray-25);
+  --surface-sunken:var(--gray-100);
+  --text-strong:var(--gray-900);
+  --text-body:var(--gray-700);
+  --text-secondary:var(--gray-600);
+  --text-muted:var(--gray-500);
+  --text-subtle:var(--gray-400);
+  --border-subtle:var(--gray-150);
+  --border-default:var(--gray-200);
+  --border-strong:var(--gray-300);
+  --hairline-gold:color-mix(in srgb, var(--accent) 55%, var(--gray-200));
+
+  --ink-band:#1f1c16; --ink-band-deep:#15120d; --ink-band-line:#453e2f;
+  --ink-band-text:#f2ecdf; --ink-band-muted:#b0a68f;
+  --wateera-gold:#C9A227;
+
+  --success-fg:#3d6b41; --success-bg:#eef3e6; --success-border:#c9d9af;
+  --warning-fg:#8f6413; --warning-bg:#f8f0db; --warning-border:#e6cf91;
+
+  --font-display:"Cormorant Garamond","Cormorant",Georgia,"Times New Roman",serif;
+  --font-sans:"Inter",system-ui,-apple-system,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  --tracking-label:0.14em;
+  --tracking-wide:0.22em;
+
+  --shadow-sm:0 1px 2px rgba(43,36,24,.06),0 1px 3px rgba(43,36,24,.05);
+  --shadow-md:0 2px 4px rgba(43,36,24,.05),0 4px 12px rgba(43,36,24,.08);
+
+  --radius-md:8px; --radius-lg:12px; --radius-pill:999px;
+
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-out-expo:cubic-bezier(.16,1,.3,1);
+  --dur-base:180ms;
+}
+
+/* ════════ BASE ════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--surface-page);
+  color:var(--text-body);
+  font-family:var(--font-sans);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-feature-settings:"ss01","cv01";
+  overflow-x:clip;
+}
+h1,h2,h3{text-wrap:balance}
+em{font-style:italic}
+.wrap{max-width:960px;margin:0 auto;padding:0 clamp(20px,4.5vw,40px)}
+
+/* reference mark — the watch-dial label system */
+.refmark{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-weight:500;font-size:11px;
+  letter-spacing:var(--tracking-wide);text-transform:uppercase;
+  color:var(--accent-active);
+}
+.refmark::before{content:"";width:5px;height:5px;background:var(--accent);flex:none}
+
+.rule-gold{width:64px;height:1px;background:var(--hairline-gold);border:0;margin:22px 0 0}
+
+/* ════════ MASTHEAD ════════ */
+.masthead{background:var(--surface-card);border-bottom:1px solid var(--hairline-gold)}
+.masthead .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px;padding-bottom:18px}
+.lockup{display:inline-flex;align-items:center;gap:11px}
+.lockup .mark{width:26px;height:26px;display:block}
+.lockup .wordmark{height:12px;width:auto;display:block}
+.head-tag{font-family:var(--font-mono);font-weight:500;font-size:10px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--text-muted);text-align:right}
+.mast-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+.tools{display:inline-flex;align-items:center;gap:8px}
+.tool{
+  font-family:var(--font-mono);font-weight:500;font-size:9.5px;
+  letter-spacing:var(--tracking-label);text-transform:uppercase;
+  color:var(--text-body);background:var(--surface-card);
+  border:1px solid var(--border-strong);border-radius:var(--radius-pill);
+  padding:6px 13px;cursor:pointer;
+  transition:background var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out),color var(--dur-base) var(--ease-out);
+}
+.tool:hover{border-color:var(--gray-400);background:var(--surface-faint)}
+.tool:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 38%, transparent)}
+.tool[aria-pressed="true"]{background:var(--accent-tint);border-color:var(--accent-border);color:var(--accent-active)}
+.tool--ink{background:var(--action);border-color:var(--action);color:#fdfbf3}
+.tool--ink:hover{background:#322d22;border-color:#322d22}
+.tool.has-edits{position:relative}
+.tool.has-edits::after{content:"";position:absolute;top:-2px;right:-2px;width:5px;height:5px;background:var(--accent)}
+.tools-note{font-family:var(--font-mono);font-weight:500;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--warning-fg)}
+
+/* edit mode */
+.editing [data-eid]{outline:1px dashed var(--border-strong);outline-offset:3px;cursor:text;border-radius:2px}
+.editing [data-eid]:hover{outline-color:var(--accent)}
+.editing [data-eid]:focus{outline:1px solid var(--accent);box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent)}
+
+/* ════════ HERO ════════ */
+.hero{padding:clamp(56px,9vw,104px) 0 clamp(40px,6vw,64px)}
+.hero h1{
+  font-family:var(--font-display);font-weight:600;color:var(--text-strong);
+  font-size:clamp(42px,7vw,66px);line-height:1.04;letter-spacing:.005em;
+  margin-top:20px;max-width:16ch;
+}
+.hero h1 .h-line{display:block}
+.hero h1 em{color:var(--accent-active)}
+.hero .lede{margin-top:24px;color:var(--text-secondary);font-size:clamp(15.5px,1.8vw,17px);max-width:56ch;line-height:1.6}
+
+/* spec strip — the machine at a glance */
+.specs{border-block:1px solid var(--border-subtle);background:var(--surface-faint)}
+.spec-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.spec{padding:clamp(24px,3.6vw,38px) clamp(16px,2.6vw,28px);border-left:1px solid var(--border-subtle)}
+.spec:first-child{border-left:0}
+.spec .big{
+  font-family:var(--font-display);font-weight:600;color:var(--text-strong);
+  font-size:clamp(34px,4.2vw,50px);line-height:1;
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1;
+}
+.spec .big sup{font-size:.44em;color:var(--accent-active);font-weight:600;vertical-align:.62em;letter-spacing:.02em}
+.spec .cap{color:var(--text-secondary);font-size:13px;margin-top:9px;line-height:1.45;max-width:22ch}
+
+/* ════════ SECTIONS ════════ */
+section.doc{padding:clamp(56px,8vw,96px) 0 0}
+section.doc:last-of-type{padding-bottom:clamp(56px,8vw,96px)}
+.sec-head h2{
+  font-family:var(--font-display);font-weight:600;color:var(--text-strong);
+  font-size:clamp(30px,4.4vw,42px);line-height:1.1;letter-spacing:.005em;margin-top:16px;
+}
+.sec-head h2 em{color:var(--accent-active)}
+.sec-head .sub{margin-top:14px;color:var(--text-muted);font-size:14px;max-width:58ch;line-height:1.6}
+.sec-body{margin-top:clamp(28px,4vw,40px)}
+
+/* ════════ THE FLOW ════════ */
+.sheet{
+  background:var(--surface-card);
+  border:1px solid var(--border-default);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+}
+.phase-strip{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 22px;
+  background:var(--surface-faint);
+  border-bottom:1px solid var(--border-subtle);
+  font-family:var(--font-mono);font-weight:500;font-size:9.5px;
+  letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--text-secondary);
+}
+.sheet > .stage + .phase-strip{border-top:1px solid var(--border-subtle)}
+.phase-strip::before{content:"";width:4px;height:4px;background:var(--accent);flex:none}
+.stage{
+  display:grid;grid-template-columns:64px 1fr auto;gap:8px 14px;align-items:start;
+  padding:18px 22px 19px 20px;
+  transition:background var(--dur-base) var(--ease-out);
+}
+.stage + .stage{border-top:1px solid var(--border-subtle)}
+.stage:hover{background:var(--surface-faint)}
+.stage .sn{
+  font-family:var(--font-display);font-weight:600;font-size:31px;line-height:1;
+  color:var(--accent-active);
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:"lnum" 1;
+  padding-top:1px;
+}
+.stage h3{font-family:var(--font-sans);font-size:15.5px;font-weight:600;color:var(--text-strong);line-height:1.35}
+.stage .desc{margin-top:3px;font-size:13px;color:var(--text-secondary);line-height:1.55;max-width:58ch}
+.stage .out{
+  margin-top:8px;font-family:var(--font-mono);font-weight:500;font-size:11.5px;
+  letter-spacing:.03em;color:var(--accent-active);
+}
+.stage .out .arrow{color:var(--text-subtle);margin-right:2px}
+.dur{
+  font-family:var(--font-mono);font-weight:500;font-size:10px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--text-secondary);
+  border:1px solid var(--border-default);background:var(--surface-sunken);
+  border-radius:var(--radius-pill);padding:4px 11px;white-space:nowrap;
+  justify-self:end;margin-top:1px;
+}
+.dur--open{color:var(--warning-fg);background:var(--warning-bg);border-color:var(--warning-border)}
+
+/* gate — an ink band the flow cannot pass */
+.gate{
+  display:flex;align-items:center;gap:13px;
+  margin:14px 0;padding:15px 22px;
+  background:linear-gradient(135deg,var(--ink-band),var(--ink-band-deep) 85%);
+  border-radius:var(--radius-md);
+  box-shadow:var(--shadow-md);
+  color:var(--ink-band-text);
+  font-family:var(--font-mono);font-weight:500;font-size:11px;
+  letter-spacing:var(--tracking-label);text-transform:uppercase;line-height:1.7;
+}
+.gate svg{flex:none;color:var(--wateera-gold)}
+.gate .gate-tag{
+  flex:none;color:var(--wateera-gold);font-size:9.5px;letter-spacing:var(--tracking-wide);
+  border:1px solid var(--ink-band-line);border-radius:var(--radius-pill);padding:3px 9px;
+}
+.gate .gate-text b{font-weight:500;color:#fff}
+.loop-note{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:14px;padding:13px 22px;
+  border:1px solid var(--border-default);border-radius:var(--radius-md);
+  font-family:var(--font-mono);font-weight:500;font-size:11px;letter-spacing:.05em;
+  color:var(--text-muted);text-align:center;
+}
+.loop-note svg{flex:none;color:var(--accent-active)}
+
+/* ════════ TIMELINE ════════ */
+.track{display:grid;grid-template-columns:repeat(5,1fr)}
+.wk{position:relative;padding:20px 18px 4px 0;margin-right:18px}
+.wk:last-child{margin-right:0}
+.wk::before{content:"";position:absolute;top:2px;left:0;right:-18px;height:1px;background:var(--hairline-gold)}
+.wk:last-child::before{right:0}
+.wk::after{content:"";position:absolute;top:0;left:0;width:5px;height:5px;background:var(--accent)}
+.wk .n{
+  font-family:var(--font-mono);font-weight:500;font-size:10px;letter-spacing:var(--tracking-label);
+  text-transform:uppercase;color:var(--accent-active);display:block;
+}
+.wk p{margin-top:8px;font-size:12.5px;color:var(--text-body);line-height:1.5;max-width:20ch}
+.tail{
+  margin-top:26px;display:flex;align-items:center;gap:12px;
+  padding:13px 18px;
+  background:var(--warning-bg);border:1px solid var(--warning-border);border-radius:var(--radius-md);
+  font-family:var(--font-mono);font-weight:500;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--warning-fg);line-height:1.7;
+}
+.tail svg{flex:none}
+
+/* rules — bordered columns, no cards */
+.rules{display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(36px,5vw,52px);border-top:1px solid var(--border-subtle)}
+.rule{padding:26px 26px 6px 0;border-left:1px solid var(--border-subtle);padding-left:26px}
+.rule:first-child{border-left:0;padding-left:0}
+.rule .tag{
+  font-family:var(--font-mono);font-weight:500;font-size:9.5px;letter-spacing:var(--tracking-wide);
+  text-transform:uppercase;color:var(--accent-active);
+}
+.rule h3{font-family:var(--font-display);font-weight:600;font-size:21px;color:var(--text-strong);line-height:1.2;margin-top:10px}
+.rule p{margin-top:8px;font-size:13px;color:var(--text-secondary);line-height:1.55}
+
+/* ════════ ARCHITECTURE ════════ */
+.arch-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.arch{min-width:560px;display:block;width:100%;height:auto}
+.arch-hint{display:none;margin-top:10px;text-align:center;font-family:var(--font-mono);font-weight:500;font-size:9.5px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--text-subtle)}
+.arch .box{fill:var(--surface-card);stroke:var(--border-default)}
+.arch .box--pkg{fill:var(--surface-card);stroke:var(--accent);stroke-width:1.3}
+.arch .lbl{font-family:var(--font-mono);font-weight:500;font-size:11.5px;fill:var(--text-strong);letter-spacing:.02em}
+.arch .lbl--pkg{fill:var(--accent-active)}
+.arch .sub{font-family:var(--font-mono);font-weight:400;font-size:9.5px;fill:var(--text-muted);letter-spacing:.03em}
+.arch .sub--gold{fill:var(--accent-active)}
+.arch .wire{stroke:var(--border-strong);stroke-width:1;fill:none}
+.arch .wire--gold{stroke:var(--accent);stroke-width:1;fill:none}
+.arch .node{fill:var(--accent)}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(30px,4.4vw,44px);border-top:1px solid var(--border-subtle)}
+.fact{padding:22px 22px 4px 0;border-left:1px solid var(--border-subtle);padding-left:22px}
+.fact:first-child{border-left:0;padding-left:0}
+.fact .tag{font-family:var(--font-mono);font-weight:500;font-size:9.5px;letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--accent-active)}
+.fact h3{font-family:var(--font-mono);font-weight:500;font-size:13.5px;color:var(--text-strong);margin-top:9px;letter-spacing:-.01em}
+.fact p{margin-top:6px;font-size:12.5px;color:var(--text-secondary);line-height:1.5}
+
+/* ════════ WHAT LIVES WHERE ════════ */
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.panel{
+  background:var(--surface-card);border:1px solid var(--border-default);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;
+}
+.panel-head{
+  background:var(--ink-band);color:var(--ink-band-text);
+  display:flex;align-items:center;gap:10px;padding:12px 18px;
+  font-family:var(--font-mono);font-weight:500;font-size:10.5px;
+  letter-spacing:var(--tracking-label);text-transform:uppercase;
+}
+.panel-head::before{content:"";width:4px;height:4px;background:var(--wateera-gold);flex:none}
+.panel-head small{color:var(--ink-band-muted);margin-left:auto;font-size:9.5px;letter-spacing:var(--tracking-label)}
+.panel ul{list-style:none;padding:8px 18px 14px}
+.panel li{
+  position:relative;padding:9px 0 9px 18px;
+  font-size:13px;color:var(--text-body);line-height:1.5;
+}
+.panel li + li{border-top:1px solid var(--border-subtle)}
+.panel li::before{content:"";position:absolute;left:1px;top:16px;width:4px;height:4px;background:var(--accent)}
+.panel li b{font-weight:600;color:var(--text-strong)}
+
+/* ════════ HANDOVER ════════ */
+.pack{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border-subtle)}
+.pack-item{padding:24px 24px 20px 0;border-left:1px solid var(--border-subtle);padding-left:24px;border-bottom:1px solid var(--border-subtle)}
+.pack-item:nth-child(3n+1){border-left:0;padding-left:0}
+.pack-item:nth-child(n+4){border-bottom:0;padding-bottom:6px}
+.pack-item h3{
+  position:relative;padding-left:16px;
+  font-family:var(--font-sans);font-size:14.5px;font-weight:600;color:var(--text-strong);line-height:1.4;
+}
+.pack-item h3::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;background:var(--accent)}
+.pack-item p{margin-top:6px;padding-left:16px;font-size:12.5px;color:var(--text-secondary);line-height:1.5}
+
+/* ════════ CLOSING — ink band ════════ */
+.closing{
+  margin-top:clamp(64px,9vw,110px);
+  background:linear-gradient(170deg,var(--ink-band),var(--ink-band-deep) 75%);
+  color:var(--ink-band-text);text-align:center;
+  padding:clamp(64px,9vw,104px) 0 clamp(48px,7vw,72px);
+}
+.closing .refmark{color:var(--wateera-gold);justify-content:center}
+.closing .refmark::before{background:var(--wateera-gold)}
+.closing h2{
+  font-family:var(--font-display);font-weight:600;color:var(--ink-band-text);
+  font-size:clamp(30px,5vw,46px);line-height:1.12;letter-spacing:.005em;
+  margin:18px auto 0;max-width:22ch;
+}
+.closing h2 em{color:var(--wateera-gold)}
+.closing .sub{color:var(--ink-band-muted);margin:18px auto 0;max-width:52ch;font-size:15px;line-height:1.6}
+.closing .end-lockup{
+  margin:clamp(40px,6vw,58px) auto 0;padding-top:clamp(26px,4vw,38px);
+  border-top:1px solid var(--ink-band-line);max-width:520px;
+}
+.closing .wrap > .end-lockup:first-child{margin-top:0;padding-top:0;border-top:0}
+.closing .end-lockup svg{width:min(280px,68%);height:auto;display:block;margin:0 auto}
+.closing .credit{
+  margin-top:18px;font-family:var(--font-mono);font-weight:500;font-size:10px;
+  letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--ink-band-muted);
+}
+
+/* ════════ MOTION — one grammar: rise + gold rules drawing ════════ */
+@keyframes riseIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.js .masthead .wrap{animation:riseIn .7s var(--ease-out-expo) both}
+.js .hero .h-anim,.js .specs.h-anim{animation:riseIn .85s var(--ease-out-expo) both;animation-delay:var(--d,0ms)}
+.js [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);transition-delay:var(--rd,0ms)}
+.js [data-reveal].in{opacity:1;transform:none}
+.js [data-reveal] .rule-gold{transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease-out) .15s}
+.js [data-reveal].in .rule-gold{transform:scaleX(1)}
+.js .wk::before{transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease-out)}
+.js [data-reveal].in ~ .track .wk::before,
+.js .track[data-reveal].in .wk::before{transform:scaleX(1)}
+.js .track .wk:nth-child(2)::before{transition-delay:.12s}
+.js .track .wk:nth-child(3)::before{transition-delay:.24s}
+.js .track .wk:nth-child(4)::before{transition-delay:.36s}
+.js .track .wk:nth-child(5)::before{transition-delay:.48s}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .masthead .wrap,.js .hero .h-anim{animation:none}
+  .js [data-reveal]{opacity:1;transform:none;transition:none}
+  .js [data-reveal] .rule-gold,.js .wk::before{transform:none;transition:none}
+  .stage{transition:none}
+}
+
+/* ════════ RESPONSIVE ════════ */
+@media (max-width:840px){
+  .spec-grid{grid-template-columns:repeat(2,1fr)}
+  .spec:nth-child(3){border-left:0}
+  .spec:nth-child(n+3){border-top:1px solid var(--border-subtle)}
+  .rules{grid-template-columns:1fr}
+  .rule{border-left:0;padding-left:0;border-top:1px solid var(--border-subtle);padding-top:22px;padding-bottom:16px}
+  .rule:first-child{border-top:0}
+  .facts{grid-template-columns:repeat(2,1fr)}
+  .fact:nth-child(3){border-left:0;padding-left:0}
+  .fact:nth-child(n+3){border-top:1px solid var(--border-subtle);margin-top:18px;padding-top:20px}
+  .panels{grid-template-columns:1fr}
+  .pack{grid-template-columns:repeat(2,1fr)}
+  .pack-item{border-left:0;padding-left:0;border-bottom:1px solid var(--border-subtle);padding-bottom:20px}
+  .pack-item:nth-child(2n){border-left:1px solid var(--border-subtle);padding-left:24px}
+  .pack-item:nth-child(n+4){border-bottom:1px solid var(--border-subtle)}
+  .pack-item:nth-child(n+5){border-bottom:0;padding-bottom:6px}
+}
+@media (max-width:600px){
+  .track{grid-template-columns:1fr 1fr;row-gap:22px}
+  .wk{margin-right:0;padding-right:14px}
+  .wk::before{right:0}
+  .stage{grid-template-columns:44px 1fr;row-gap:6px;padding:16px 16px 17px 14px}
+  .stage .sn{font-size:24px;padding-top:3px}
+  .dur{grid-column:2;justify-self:start;margin-top:2px}
+  .phase-strip{padding:8px 16px}
+  .gate{align-items:flex-start;padding:13px 16px;font-size:10px;letter-spacing:.1em}
+  .gate .gate-tag{margin-top:1px}
+  .loop-note{font-size:10.5px;padding:12px 16px}
+  .tail{padding:12px 14px;font-size:10.5px;letter-spacing:.07em}
+  .panel-head{flex-wrap:wrap;row-gap:4px}
+  .panel-head small{margin-left:14px}
+  .pack{grid-template-columns:1fr}
+  .pack-item,.pack-item:nth-child(2n){border-left:0;padding-left:0;border-bottom:1px solid var(--border-subtle);padding-bottom:20px}
+  .pack-item:last-child{border-bottom:0;padding-bottom:6px}
+  .head-tag{font-size:9px}
+  .masthead .wrap{align-items:flex-start}
+  .mast-right{gap:8px}
+  .arch-scroll{mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 34px),transparent 100%);-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 34px),transparent 100%)}
+  .arch-hint{display:block}
+}
+</style>
+</head>
+<body>
+<!--
+THESIS: The process document IS the machine — a quiet-luxury operating manual where
+gates physically interrupt the reading flow the way they interrupt delivery. Refuses
+the category default (color-coded stage cards on grid paper) in favor of one gold
+accent and structural taxonomy.
+OWN-WORLD: Wateera standard — cream #f3f0e6 page, ivory sheets, warm stone borders,
+antique gold #c9a227 the only saturated color, ink bands #1f1c16 for gates and the
+close, Cormorant Garamond display, Inter body, JetBrains Mono watch-dial labels,
+gold hairlines, 5px square motif from the mark's endpoints.
+STORY: A team member recalls any rule in seconds — stages in order, gates as hard
+stops, the five-week clock, what ships — and leaves trusting the repo as truth.
+FIRST VIEWPORT: Masthead (lockup + INTERNAL·V2.0 tag), refmark, serif headline
+"Deal to delivery, then the retainer.", lede, then the 10/2/5/1 spec strip.
+FORM: Brief-pinned world (user's shipped design system + live register); no roll —
+pinned direction beats the roll. Seed: none (pinned).
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
+review, the verdict, and DESIGN.md
+-->
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="lockup" aria-label="Wateera">
+      <svg class="mark" viewBox="0 0 100 100" role="img" aria-hidden="true">
+        <path d="M 22 28 L 32 72 L 42 50 L 50 72 L 58 50 L 68 72 L 78 28" fill="none" stroke="#C9A227" stroke-width="3" stroke-linejoin="miter" stroke-linecap="square"/>
+        <rect x="20" y="26" width="4" height="4" fill="#C9A227"/>
+        <rect x="76" y="26" width="4" height="4" fill="#C9A227"/>
+      </svg>
+      <svg class="wordmark" viewBox="-8 -8 782 116" role="img" aria-hidden="true">
+        <path d="M 0.00 0.00 L 24.00 100.00 L 55.00 38.00 L 86.00 100.00 L 110.00 0.00  M 148.00 100.00 L 188.00 0.00 L 228.00 100.00 M 161.00 70.00 L 215.00 70.00  M 266.00 0.00 H 338.00 M 302.00 0.00 V 100.00  M 376.00 0.00 V 100.00 M 376.00 0.00 H 438.00 M 376.00 50.00 H 426.00 M 376.00 100.00 H 438.00  M 476.00 0.00 V 100.00 M 476.00 0.00 H 538.00 M 476.00 50.00 H 526.00 M 476.00 100.00 H 538.00  M 576.00 100.00 V 0.00 H 626.00 A 25 25 0 0 1 626.00 50 H 576.00 M 609.00 50.00 L 648.00 100.00  M 686.00 100.00 L 726.00 0.00 L 766.00 100.00 M 699.00 70.00 L 753.00 70.00" fill="none" stroke="#0A0A0A" stroke-width="6" stroke-linejoin="miter" stroke-linecap="square"/>
+      </svg>
+    </span>
+    <span class="mast-right">
+      <span class="tools" role="group" aria-label="Document editing">
+        <button type="button" class="tool" id="editBtn" aria-pressed="false" title="Edit the document text in place">Edit</button>
+        <button type="button" class="tool tool--ink" id="saveBtn" hidden title="Download this document with your edits baked in">Save copy</button>
+        <button type="button" class="tool" id="resetBtn" hidden title="Discard saved edits and restore the original text">Reset</button>
+      </span>
+    </span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="refmark h-anim" style="--d:60ms">Business Process · Operating Manual</span>
+    <h1>
+      <span class="h-line h-anim" style="--d:140ms">Deal to delivery,</span>
+      <span class="h-line h-anim" style="--d:260ms">then the <em>retainer.</em></span>
+    </h1>
+  </div>
+</section>
+
+<div class="specs h-anim" style="--d:520ms">
+  <div class="wrap">
+    <div class="spec-grid">
+      <div class="spec"><div class="big">10</div><p class="cap">stages, deal closed to retainer</p></div>
+      <div class="spec"><div class="big">2</div><p class="cap">gates the process cannot pass</p></div>
+      <div class="spec"><div class="big">5<sup>wk</sup></div><p class="cap">signature to acceptance, read‑only scope</p></div>
+      <div class="spec"><div class="big">1<sup>yr</sup></div><p class="cap">support retainer, renewing</p></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section class="doc" id="flow">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="refmark">The Flow</span>
+      <h2>Ten stages. <em>Two gates.</em></h2>
+      <hr class="rule-gold">
+    </div>
+
+    <div class="sec-body">
+      <div class="sheet" data-reveal>
+        <div class="phase-strip">Phase 1 · Sell</div>
+        <article class="stage">
+          <div class="sn">01</div>
+          <div>
+            <h3>Deal closed</h3>
+            <p class="desc">Partner closes. Our operation starts.</p>
+            <p class="out"><span class="arrow">→</span> signed engagement</p>
+          </div>
+        </article>
+        <article class="stage">
+          <div class="sn">02</div>
+          <div>
+            <h3>Workflow engineering</h3>
+            <p class="desc">Map their process, systems, data, KPIs. Collect sample exports.</p>
+            <p class="out"><span class="arrow">→</span> workflow map + sample data</p>
+          </div>
+          <span class="dur">2–3 days</span>
+        </article>
+        <article class="stage">
+          <div class="sn">03</div>
+          <div>
+            <h3>Designing the spec</h3>
+            <p class="desc">Dashboards, automations, data sources, acceptance criteria.</p>
+            <p class="out"><span class="arrow">→</span> Spec.md</p>
+          </div>
+          <span class="dur">2 days</span>
+        </article>
+      </div>
+
+      <div class="gate" data-reveal>
+        <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="7" width="11" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 7V5a3 3 0 016 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span class="gate-tag">Gate</span>
+        <span class="gate-text">Client signs the spec · <b>setup fee invoiced</b></span>
+      </div>
+
+      <div class="sheet" data-reveal>
+        <div class="phase-strip">Phase 2 · Excite</div>
+        <article class="stage">
+          <div class="sn">04</div>
+          <div>
+            <h3>Demo shared</h3>
+            <p class="desc">Their logo, their KPIs, mocked numbers. Live in days. Excites the boss, validates the spec early.</p>
+            <p class="out"><span class="arrow">→</span> client.wateera.net</p>
+          </div>
+          <span class="dur">1 day</span>
+        </article>
+        <div class="phase-strip">Phase 3 · Build</div>
+        <article class="stage">
+          <div class="sn">05</div>
+          <div>
+            <h3>Copying Wateera template</h3>
+            <p class="desc">Template copied, packages installed, theme set, roadmap generated from the spec.</p>
+            <p class="out"><span class="arrow">→</span> client-{name} repo</p>
+          </div>
+          <span class="dur">1 day</span>
+        </article>
+        <article class="stage">
+          <div class="sn">06</div>
+          <div>
+            <h3>Build sessions</h3>
+            <p class="desc">One task, one session. Tests + docs + commit + push.</p>
+            <p class="out"><span class="arrow">↻</span> until roadmap complete</p>
+          </div>
+          <span class="dur">~3 weeks</span>
+        </article>
+        <article class="stage">
+          <div class="sn">07</div>
+          <div>
+            <h3>Quality gate</h3>
+            <p class="desc">End‑to‑end test, every spec line self‑checked, using Codex and CodeRabbit for review.</p>
+            <p class="out"><span class="arrow">→</span> internal pass sheet</p>
+          </div>
+          <span class="dur">2 days</span>
+        </article>
+        <div class="phase-strip">Phase 4 · Deliver</div>
+        <article class="stage">
+          <div class="sn">08</div>
+          <div>
+            <h3>Acceptance walkthrough</h3>
+            <p class="desc">The client accepts the work.</p>
+            <p class="out"><span class="arrow">→</span> written acceptance</p>
+          </div>
+          <span class="dur dur--open">Open</span>
+        </article>
+      </div>
+
+      <div class="gate" data-reveal>
+        <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="7" width="11" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 7V5a3 3 0 016 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span class="gate-tag">Gate</span>
+        <span class="gate-text">Delivery</span>
+      </div>
+
+      <div class="sheet" data-reveal>
+        <div class="phase-strip">Phase 4 · Deliver · continued</div>
+        <article class="stage">
+          <div class="sn">09</div>
+          <div>
+            <h3>Go‑live + final tour</h3>
+            <p class="desc">Installed on their servers. Handover pack delivered.</p>
+            <p class="out"><span class="arrow">→</span> system + pack</p>
+          </div>
+          <span class="dur dur--open">open · their testing</span>
+        </article>
+        <div class="phase-strip">Phase 5 · Support</div>
+        <article class="stage">
+          <div class="sn">10</div>
+          <div>
+            <h3>Retainer</h3>
+            <p class="desc">Keep it running.</p>
+          </div>
+          <span class="dur">1 year, renewing</span>
+        </article>
+      </div>
+
+      <div class="loop-note" data-reveal>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M6 2v3.5H9.5"/></svg>
+        <span>New feature → mini‑spec → stages 03–09 again, smaller</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc" id="timeline">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="refmark">Timeline</span>
+      <h2>Five weeks</h2>
+      <p class="sub">After signing the deal.</p>
+      <hr class="rule-gold">
+    </div>
+    <div class="sec-body">
+      <div class="track" data-reveal>
+        <div class="wk"><span class="n">Week 1</span><p>Workflow engineering · spec · signature</p></div>
+        <div class="wk"><span class="n">Week 2</span><p>Demo · bootstrap · build starts</p></div>
+        <div class="wk"><span class="n">Week 3</span><p>Build sessions</p></div>
+        <div class="wk"><span class="n">Week 4</span><p>Build sessions</p></div>
+        <div class="wk"><span class="n">Week 5</span><p>Quality gate · acceptance</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc" id="architecture">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="refmark">Repo Architecture</span>
+      <h2>One template.</h2>
+      <hr class="rule-gold">
+    </div>
+    <div class="sec-body">
+      <div class="arch-scroll" data-reveal>
+        <svg class="arch" viewBox="58 0 584 306" role="img" aria-label="Diagram: wateera-template is copied into client repos; wateera-packages is imported by all of them">
+          <rect class="box" x="230" y="8" width="240" height="48" rx="6"/>
+          <text class="lbl" x="350" y="29" text-anchor="middle">wateera-template</text>
+          <text class="sub" x="350" y="45" text-anchor="middle">copied once · then theirs</text>
+
+          <path class="wire" d="M350 56 L160 112 M350 56 L350 112 M350 56 L540 112"/>
+          <text class="sub" x="350" y="86" text-anchor="middle">use this template</text>
+
+          <rect class="box" x="70" y="114" width="180" height="52" rx="6"/>
+          <text class="lbl" x="160" y="136" text-anchor="middle">client-sunbulah</text>
+          <text class="sub" x="160" y="152" text-anchor="middle">own repo · own roadmap</text>
+
+          <rect class="box" x="260" y="114" width="180" height="52" rx="6"/>
+          <text class="lbl" x="350" y="136" text-anchor="middle">client-b</text>
+          <text class="sub" x="350" y="152" text-anchor="middle">own repo · own roadmap</text>
+
+          <rect class="box" x="450" y="114" width="180" height="52" rx="6"/>
+          <text class="lbl" x="540" y="136" text-anchor="middle">client-c … 100</text>
+          <text class="sub" x="540" y="152" text-anchor="middle">own repo · own roadmap</text>
+
+          <path class="wire--gold" d="M160 166 L160 224 M350 166 L350 224 M540 166 L540 224"/>
+          <rect class="node" x="157.5" y="164" width="5" height="5"/>
+          <rect class="node" x="347.5" y="164" width="5" height="5"/>
+          <rect class="node" x="537.5" y="164" width="5" height="5"/>
+          <text class="sub sub--gold" x="350" y="203" text-anchor="middle">imported · updated by version bump</text>
+
+          <rect class="box box--pkg" x="180" y="226" width="340" height="56" rx="6"/>
+          <text class="lbl lbl--pkg" x="350" y="249" text-anchor="middle">wateera-packages</text>
+          <text class="sub" x="350" y="266" text-anchor="middle">tokens · ui · auth · core · connectors · tour-kit</text>
+        </svg>
+      </div>
+      <p class="arch-hint" aria-hidden="true">← scroll for the full diagram →</p>
+
+      <div class="facts">
+        <div class="fact" data-reveal style="--rd:0ms">
+          <span class="tag">Copied</span>
+          <h3>template</h3>
+        </div>
+        <div class="fact" data-reveal style="--rd:70ms">
+          <span class="tag">Imported</span>
+          <h3>packages</h3>
+        </div>
+        <div class="fact" data-reveal style="--rd:140ms">
+          <span class="tag">Per client</span>
+          <h3>theme file</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc" id="lives-where">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="refmark">What Lives Where</span>
+      <h2>Theirs to keep, <em>ours to run.</em></h2>
+      <hr class="rule-gold">
+    </div>
+    <div class="sec-body">
+      <div class="panels">
+        <div class="panel" data-reveal>
+          <div class="panel-head">wateera-template <small>copied · becomes theirs</small></div>
+          <ul>
+            <li><b>Docs set</b> — scope, roadmap, decisions, architecture, support</li>
+            <li><b>Quality machine</b> — hooks, CI, lint, tests, golden datasets</li>
+            <li><b>Tour folder</b></li>
+            <li><b>App skeleton</b> that imports the packages</li>
+          </ul>
+        </div>
+        <div class="panel" data-reveal style="--rd:100ms">
+          <div class="panel-head">wateera-packages <small>imported · stays ours</small></div>
+          <ul>
+            <li><b>tokens + ui</b> — the Wateera look and the shell</li>
+            <li><b>auth</b> — login, users, roles</li>
+            <li><b>core</b> — config, audit log, errors, health</li>
+            <li><b>connectors</b> — SAP · Oracle · Odoo adapters</li>
+            <li><b>tour-kit</b> — showcase components</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc" id="handover">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="refmark">Handover Pack</span>
+      <h2>What the client <em>gets away with.</em></h2>
+      <hr class="rule-gold">
+    </div>
+    <div class="sec-body">
+      <div class="pack">
+        <div class="pack-item" data-reveal style="--rd:0ms">
+          <h3>The system</h3>
+          <p>Installed and running on their servers.</p>
+        </div>
+        <div class="pack-item" data-reveal style="--rd:60ms">
+          <h3>Tour link</h3>
+          <p>Shareable showcase. Sells for us.</p>
+        </div>
+        <div class="pack-item" data-reveal style="--rd:120ms">
+          <h3>User guide</h3>
+          <p>Short, screenshots, per role.</p>
+        </div>
+        <div class="pack-item" data-reveal style="--rd:180ms">
+          <h3>Training session</h3>
+          <p>Recorded.</p>
+        </div>
+        <div class="pack-item" data-reveal style="--rd:240ms">
+          <h3>Support terms</h3>
+          <p>Covered, response, what costs extra.</p>
+        </div>
+        <div class="pack-item" data-reveal style="--rd:300ms">
+          <h3>Acceptance record</h3>
+          <p>Defines “working” contractually.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="closing" id="closing">
+  <div class="wrap">
+    <div class="end-lockup" data-reveal>
+      <svg viewBox="-8 -8.60 1038 117.20" role="img" aria-label="Wateera">
+        <g transform="translate(0, -57.8) scale(2.2)">
+          <path d="M 22 28 L 32 72 L 42 50 L 50 72 L 58 50 L 68 72 L 78 28" fill="none" stroke="#C9A227" stroke-width="3" stroke-linejoin="miter" stroke-linecap="square"/>
+          <rect x="20" y="26" width="4" height="4" fill="#C9A227"/>
+          <rect x="76" y="26" width="4" height="4" fill="#C9A227"/>
+        </g>
+        <g transform="translate(256, 0)">
+          <path d="M 0.00 0.00 L 24.00 100.00 L 55.00 38.00 L 86.00 100.00 L 110.00 0.00  M 148.00 100.00 L 188.00 0.00 L 228.00 100.00 M 161.00 70.00 L 215.00 70.00  M 266.00 0.00 H 338.00 M 302.00 0.00 V 100.00  M 376.00 0.00 V 100.00 M 376.00 0.00 H 438.00 M 376.00 50.00 H 426.00 M 376.00 100.00 H 438.00  M 476.00 0.00 V 100.00 M 476.00 0.00 H 538.00 M 476.00 50.00 H 526.00 M 476.00 100.00 H 538.00  M 576.00 100.00 V 0.00 H 626.00 A 25 25 0 0 1 626.00 50 H 576.00 M 609.00 50.00 L 648.00 100.00  M 686.00 100.00 L 726.00 0.00 L 766.00 100.00 M 699.00 70.00 L 753.00 70.00" fill="none" stroke="#F6F4EF" stroke-width="6" stroke-linejoin="miter" stroke-linecap="square"/>
+        </g>
+      </svg>
+      <p class="credit">Wateera · Business Process</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add("js");
+(function(){
+  var els = document.querySelectorAll("[data-reveal]");
+  if(!("IntersectionObserver" in window)){ els.forEach(function(el){ el.classList.add("in"); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  },{rootMargin:"0px 0px -8% 0px",threshold:0.08});
+  els.forEach(function(el){ io.observe(el); });
+})();
+
+/* ── In-place text editing ─────────────────────────────────────
+   Edit → texts become editable in place. Edits autosave to this
+   browser (localStorage). Save copy → downloads the document with
+   the edits baked in. Reset → restores the original text.       */
+(function(){
+  var KEY = "wateera-process-edits-v3";
+  var SELECTORS = [
+    ".head-tag",".hero .refmark",".hero .h-line",".hero .lede",
+    ".spec .big",".spec .cap",
+    ".sec-head .refmark",".sec-head h2",".sec-head .sub",
+    ".phase-strip",".stage h3",".stage .desc",".stage .out",".dur",
+    ".gate-text",".loop-note span",
+    ".wk .n",".wk p",".tail span",
+    ".rule .tag",".rule h3",".rule p",
+    ".fact .tag",".fact h3",".fact p",
+    ".panel-head",".panel li",
+    ".pack-item h3",".pack-item p",
+    ".closing .refmark",".closing h2",".closing .sub",".credit"
+  ];
+  var editBtn = document.getElementById("editBtn");
+  var saveBtn = document.getElementById("saveBtn");
+  var resetBtn = document.getElementById("resetBtn");
+  if(!editBtn) return;
+
+  var nodes = document.querySelectorAll(SELECTORS.join(","));
+  nodes.forEach(function(el,i){ el.setAttribute("data-eid", String(i)); });
+
+  function store(){ try{ return JSON.parse(localStorage.getItem(KEY)||"{}"); }catch(e){ return {}; } }
+  var storeWarned = false;
+  function persist(map){
+    try{ localStorage.setItem(KEY, JSON.stringify(map)); }
+    catch(e){
+      if(storeWarned) return;
+      storeWarned = true;
+      var note = document.createElement("span");
+      note.className = "tools-note";
+      note.textContent = "autosave unavailable — use Save copy";
+      editBtn.parentNode.insertBefore(note, editBtn);
+      saveBtn.hidden = false;
+    }
+  }
+  function hasEdits(){ return Object.keys(store()).length > 0; }
+  function markState(){
+    editBtn.classList.toggle("has-edits", hasEdits());
+    resetBtn.hidden = !(editing || hasEdits());
+  }
+
+  // re-apply edits saved in this browser
+  var saved = store();
+  Object.keys(saved).forEach(function(id){
+    var el = document.querySelector('[data-eid="'+id+'"]');
+    if(el) el.innerHTML = saved[id];
+  });
+
+  var editing = false;
+  function setEditing(on){
+    editing = on;
+    document.body.classList.toggle("editing", on);
+    nodes.forEach(function(el){
+      if(on) el.setAttribute("contenteditable","true");
+      else el.removeAttribute("contenteditable");
+    });
+    editBtn.setAttribute("aria-pressed", String(on));
+    editBtn.textContent = on ? "Done" : "Edit";
+    saveBtn.hidden = !on && !hasEdits();
+    markState();
+  }
+
+  editBtn.addEventListener("click", function(){ setEditing(!editing); });
+
+  document.body.addEventListener("input", function(e){
+    var el = e.target.closest ? e.target.closest("[data-eid]") : null;
+    if(!el) return;
+    var map = store();
+    map[el.getAttribute("data-eid")] = el.innerHTML;
+    persist(map);
+    markState();
+    saveBtn.hidden = false;
+  });
+
+  // paste as plain text only
+  document.body.addEventListener("paste", function(e){
+    if(!editing || !e.target.closest("[data-eid]")) return;
+    e.preventDefault();
+    var text = (e.clipboardData || window.clipboardData).getData("text/plain");
+    document.execCommand("insertText", false, text);
+  });
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && editing){ setEditing(false); return; }
+    if(!editing) return;
+    var inEditable = e.target.closest && e.target.closest("[data-eid]");
+    if(!inEditable) return;
+    // keep the markup plain: no rich-format shortcuts, no <div> line wrappers
+    if((e.metaKey || e.ctrlKey) && /^[biu]$/i.test(e.key)){ e.preventDefault(); return; }
+    if(e.key === "Enter"){ e.preventDefault(); document.execCommand("insertLineBreak"); }
+  });
+
+  saveBtn.addEventListener("click", function(){
+    var wasEditing = editing;
+    if(wasEditing) setEditing(false);
+    var clone = document.documentElement.cloneNode(true);
+    clone.classList.remove("js");
+    var cb = clone.querySelector("body"); if(cb) cb.classList.remove("editing");
+    clone.querySelectorAll("[contenteditable]").forEach(function(el){ el.removeAttribute("contenteditable"); });
+    clone.querySelectorAll("[data-eid]").forEach(function(el){ el.removeAttribute("data-eid"); });
+    clone.querySelectorAll("[data-reveal]").forEach(function(el){ el.classList.remove("in"); });
+    var eb = clone.querySelector("#editBtn");
+    if(eb){ eb.textContent = "Edit"; eb.setAttribute("aria-pressed","false"); eb.classList.remove("has-edits"); }
+    var sb = clone.querySelector("#saveBtn"); if(sb) sb.hidden = true;
+    var rb = clone.querySelector("#resetBtn"); if(rb) rb.hidden = true;
+    var html = "<!DOCTYPE html>\n" + clone.outerHTML;
+    // give the copy its own autosave key so edits in the original never bleed into it
+    html = html.replace('var KEY = "wateera-process-edits-v3"', 'var KEY = "wateera-process-edits-v3-' + Date.now().toString(36) + '"');
+    var blob = new Blob([html], {type:"text/html"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "wateera-process.html";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 400);
+    if(wasEditing) setEditing(true);
+  });
+
+  resetBtn.addEventListener("click", function(){
+    if(!confirm("Discard saved edits and restore the original text?")) return;
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  });
+
+  setEditing(false);
+})();
+</script>
+</body>
+</html>
